@@ -8,6 +8,16 @@ variable "cidr_block" {
     type        = string
 }
 
-variable "subnets" {
-    description = "subnetのmap"
+variable "public_subnets" {
+    description = "public subnetのmap"
+}
+variable "private_subnets" {
+    description = "private subnetのmap"
+}
+
+variable "security_group" {
+    description = "security group"
+}
+variable "security_group_rule" {
+    description = "security group rule"
 }

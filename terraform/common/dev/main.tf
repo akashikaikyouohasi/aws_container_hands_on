@@ -54,7 +54,11 @@ module "network" {
   name = var.name
 
   cidr_block = local.cidr_block
-  subnets = local.subnets
+  public_subnets = local.public_subnets
+  private_subnets = local.private_subnets
+
+  security_group = local.security_group
+  security_group_rule = local.security_group_rule
 }
 
 output "aws_vpc"{
