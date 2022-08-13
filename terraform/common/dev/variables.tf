@@ -1,3 +1,6 @@
+#####################
+# NWリソースの変数
+#####################
 variable "name" {
     default = "sbcntrVpc"
 }
@@ -29,9 +32,7 @@ locals {
             cidr_block = "10.0.241.0/24"
         }
     }
-}
 
-locals {
     private_subnets = {
         private-container-1a = {
             name = "sbcntr-subnet-private-container-1a"
@@ -52,6 +53,16 @@ locals {
             name = "sbcntr-subnet-private-db-1c"
             availability_zone = "ap-northeast-1c"
             cidr_block = "10.0.17.0/24"
+        }
+        private-egress-1a = {
+            name = "sbcntr-subnet-private-egress-1a"
+            availability_zone = "ap-northeast-1a"
+            cidr_block = "10.0.248.0/24"
+        }
+        private-egress-1c = {
+            name = "sbcntr-subnet-private-egress-1c"
+            availability_zone = "ap-northeast-1c"
+            cidr_block = "10.0.249.0/24"
         }
     }
 }
@@ -107,6 +118,22 @@ locals {
             protocol = "tcp"
             source_security_group_id = "management"
             cidr_blocks = null
+        }
+    }
+}
+
+#####################
+# ECR向けの変数
+#####################
+locals {
+    ecr = {
+        backend = {
+            name = "sbcntr-backend"
+           scan_on_push = false
+        }
+        frontend = {
+            name = "sbcntr-frontend"
+           scan_on_push = false
         }
     }
 }

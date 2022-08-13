@@ -64,3 +64,8 @@ module "network" {
 output "aws_vpc"{
   value = module.network
 }
+
+module "ecr" {
+  source = "../modules/ecr"
+  ecr = local.ecr
+}
