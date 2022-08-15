@@ -57,8 +57,13 @@ module "network" {
   public_subnets = local.public_subnets
   private_subnets = local.private_subnets
 
+  public_route_table = local.public_route_table
+  private_route_table = local.private_route_table
+
   security_group = local.security_group
   security_group_rule = local.security_group_rule
+
+  endpoint_s3_gateway = local.endpoint_s3_gateway
 }
 
 output "aws_vpc"{

@@ -15,9 +15,10 @@ variable "private_subnets" {
     description = "private subnetのmap"
 }
 
-variable "security_group" {
-    description = "security group"
-}
-variable "security_group_rule" {
-    description = "security group rule"
-}
+variable "public_route_table" {}
+variable "private_route_table" {}
+
+variable "security_group" {}
+variable "security_group_rule" {}
+
+variable "endpoint_s3_gateway" {}
