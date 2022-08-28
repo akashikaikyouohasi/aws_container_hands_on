@@ -1,3 +1,4 @@
+# cloud9 作成
 resource "aws_cloud9_environment_ec2" "main" {
     name = var.cloud9.name
     description = var.cloud9.description
@@ -30,3 +31,79 @@ data "aws_instance" "cloud9_instance" {
 output "cloud9_values" {
     value = data.aws_instance.cloud9_instance
 }
+
+# IAM policy作成
+# 参考：https://docs.aws.amazon.com/ja_jp/AmazonECR/latest/userguide/security_iam_id-based-policy-examples.html#security_iam_id-based-policy-examples-access-one-bucket
+data "aws_iam_policy_document" "cloud9" {
+    statement {
+        sid = "ListImagesInRepository"
+        effect = "Allow"
+        actions = [
+            "ecr:ListImages"
+        ]
+        resources = [
+            for k, v in var.ecr_repositories: v
+        ]    
+    }
+    statement {
+        sid = "GetAuthorizationToken"
+        effect = "Allow"
+        actions = [
+            "ecr:FetAuthorizationToken"
+        ]
+        resources = [
+            "*"
+        ]    
+    }
+    statement {
+        sid = "ManageRepositoryContents"
+        effect = "Allow"
+        actions = [
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:GetDownloadUrlForLayer",
+            "ecr:GetRepositoryPolicy",
+            "ecr:DescribeRepositories",
+            "ecr:ListImages",
+            "ecr:DescribeImages",
+            "ecr:BatchGetImage",
+            "ecr:InitiateLayerUpload",
+            "ecr:UploadLayerPart",
+            "ecr:CompleteLayerUpload",
+            "ecr:PutImage"
+        ]
+        resources = [
+            for k, v in var.ecr_repositories: v
+        ]    
+    }
+}
+resource "aws_iam_policy" "cloud9" {
+    name = "svcntr-AccessingECRRepositoryPolicy"
+    description = "Policy to access ECR repo from Cloud9 instance"
+    policy = data.aws_iam_policy_document.cloud9.json
+}
+
+# IAM Role
+data "aws_iam_policy_document" "cloud9_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+resource "aws_iam_role" "cloud9" {
+    name = "sbcntr-cloud9-role"
+    assume_role_policy = data.aws_iam_policy_document.cloud9_assume_role_policy.json
+}
+resource "aws_iam_policy_attachment" "cloud9" {
+    name = "cloud9_attachment"
+    roles = [aws_iam_role.cloud9.name]
+    policy_arn = aws_iam_policy.cloud9.arn
+}
+
+resource "aws_iam_instance_profile" "cloud9" {
+    name = "sbcntr-cloud9-role"
+    role = aws_iam_role.cloud9.name
+} 
+# IAMロールをCloud9にアタッチできそうにないので、手動で付ける

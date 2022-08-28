@@ -29,6 +29,9 @@ module "ecr" {
   source = "../modules/ecr"
   ecr = local.ecr
 }
+output "ecr"{
+  value = module.ecr
+}
 
 # Cloud9
 module "cloud9" {
@@ -36,6 +39,7 @@ module "cloud9" {
   cloud9 = local.cloud9
   public_subnets = module.network.public_subnets
   sg = module.network.sg
+  ecr_repositories = module.ecr.ecr_repositories
 }
 
 output "cloud9" {
