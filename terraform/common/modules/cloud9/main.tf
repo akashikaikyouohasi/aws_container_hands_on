@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "cloud9" {
         sid = "GetAuthorizationToken"
         effect = "Allow"
         actions = [
-            "ecr:FetAuthorizationToken"
+            "ecr:GetAuthorizationToken"
         ]
         resources = [
             "*"
