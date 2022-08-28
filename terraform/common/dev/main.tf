@@ -1,53 +1,7 @@
-terraform {
-  # terraformのバージョン指定
-  required_version = ">=1.0.8"
-
-  # 使用するAWSプロバイダーのバージョン指定（結構更新が速い）
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~>4.26.0"
-    }
-  }
-
-  # tfstate(状態管理用ファイル)をS3に保存する設定
-  backend "s3" {
-    bucket = "tfstate-terraform-20211204"
-    key    = "dev-ecs-handson/terraform.tfstate"
-    region = "ap-northeast-1"
-  }
-}
-
-# 明示的にAWSプロバイダを定義（暗黙的に理解してくれる）
-provider "aws" {
-  region  = "ap-northeast-1"
-
-  # 作成する全リソースに付与するタグ設定
-  default_tags {
-    tags = {
-      env = "dev"
-      project_name = "dev-ecs-handson"
-    }
-  }
-}
-
-# グローバルリージョンにデプロイする必要があるもの用：Multiple Providers機能
-provider "aws" {
-  alias = "virginia"
-  region  = "us-east-1"
-
-  # 作成する全リソースに付与するタグ設定
-  default_tags {
-    tags = {
-      env = "dev"
-      project_name = "dev-ecs-handson"
-    }
-  }
-}
-
 ##################
 # リソース設定
 ##################
+# ネットワーク
 module "network" {
   source = "../modules/network"
 
@@ -66,11 +20,24 @@ module "network" {
   endpoint_s3_gateway = local.endpoint_s3_gateway
 }
 
-output "aws_vpc"{
+output "vpc"{
   value = module.network
 }
 
+# ECR
 module "ecr" {
   source = "../modules/ecr"
   ecr = local.ecr
+}
+
+# Cloud9
+module "cloud9" {
+  source = "../modules/cloud9"
+  cloud9 = local.cloud9
+  public_subnets = module.network.public_subnets
+  sg = module.network.sg
+}
+
+output "cloud9" {
+  value = module.cloud9
 }
