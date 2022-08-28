@@ -1,5 +1,5 @@
 #####################
-# NWリソースの変数
+# NWリソース
 #####################
 variable "name" {
     default = "sbcntrVpc"
@@ -163,7 +163,7 @@ locals {
 }
 
 #####################
-# ECR向けの変数
+# ECR
 #####################
 locals {
     ecr = {
@@ -175,6 +175,25 @@ locals {
             name = "sbcntr-frontend"
            scan_on_push = false
         }
+    }
+}
+
+
+#####################
+# build環境
+#####################
+locals {
+    cloud9 = {
+        name = "sbcntr-dev"
+        description = "Cloud9 for application development"
+
+        connection_type = "CONNECT_SSH"
+        instance_type = "t2.micro"
+
+        subnet_id = local.public_subnets.public-management-1a.name
+        security_group = "management"
+
+        owner_arn = "arn:aws:iam::206863353204:user/test"
     }
 }
 
