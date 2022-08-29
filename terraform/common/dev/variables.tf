@@ -101,7 +101,7 @@ locals {
 }
 
 locals {
-    security_group = ["ingress", "frontend", "internal_alb", "backend", "db", "management"]
+    security_group = ["ingress", "frontend", "internal_alb", "backend", "db", "management", "egress"]
     security_group_rule = {
         ingress = {
             sg = "ingress"
@@ -148,6 +148,27 @@ locals {
         db_2 = {
             sg = "db"
             port = 3306
+            protocol = "tcp"
+            source_security_group_id = "management"
+            cidr_blocks = null
+        }
+        egress = {
+            sg = "egress"
+            port = 443
+            protocol = "tcp"
+            source_security_group_id = "frontend"
+            cidr_blocks = null
+        }
+        egress_2 = {
+            sg = "egress"
+            port = 443
+            protocol = "tcp"
+            source_security_group_id = "backend"
+            cidr_blocks = null
+        }
+        egress_3 = {
+            sg = "egress"
+            port = 443
             protocol = "tcp"
             source_security_group_id = "management"
             cidr_blocks = null
