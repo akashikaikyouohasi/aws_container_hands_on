@@ -1,6 +1,8 @@
 resource "aws_vpc" "vpc" {
     cidr_block = var.cidr_block
-    
+    enable_dns_support = true #Interface型VPCエンドポイントのために必要
+    enable_dns_hostnames = true #Interface型VPCエンドポイントのために必要
+
     tags = {
         Name = var.name
     }
