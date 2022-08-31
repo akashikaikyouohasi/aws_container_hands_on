@@ -131,6 +131,13 @@ locals {
             source_security_group_id = "management"
             cidr_blocks = null
         }
+        internal_alb_3 = {
+            sg = "internal_alb"
+            port = 10080
+            protocol = "tcp"
+            source_security_group_id = "management"
+            cidr_blocks = null
+        }
         backend = {
             sg = "backend"
             port = 80

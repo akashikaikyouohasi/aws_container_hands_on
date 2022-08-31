@@ -1,4 +1,4 @@
 variable "vpc_id" {}
 
-variable "endpoints" {}
+variable "interface_endpoints" {}
 

@@ -1,18 +1,16 @@
 ##################
-# リソース設定
+# NWリソース設定
 ##################
 
-module "endpoints" {
-  source = "../modules/endpoints"
+# module "endpoints" {
+#   source = "../modules/endpoints"
 
-  vpc_id = data.aws_vpc.vpc.id
+#   vpc_id = data.aws_vpc.vpc.id
   
-  endpoints = local.endpoints
-}
+#   endpoints = local.endpoints
+# }
 
-##################
-# data
-##################
+### data
 # vpc id
 data "aws_vpc" "vpc" {
   filter {
@@ -41,3 +39,17 @@ data "aws_security_groups" "security_groups" {
     values = [each.value]
   }
 }
+
+##################
+# ALB
+##################
+module "albs" {
+  source = "../modules/alb"
+
+  vpc_id = data.aws_vpc.vpc.id
+  
+  intenal_albs = local.intenal_albs
+  target_groups = local.target_groups
+  listener_internal_alb_green = local.listener_internal_alb_green
+}
+
