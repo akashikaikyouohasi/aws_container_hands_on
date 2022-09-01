@@ -6,7 +6,7 @@ module "endpoints" {
   source = "../modules/endpoints"
 
   vpc_id = data.aws_vpc.vpc.id
-  
+
   endpoints = local.endpoints
 }
 
@@ -14,7 +14,7 @@ module "endpoints" {
 # vpc id
 data "aws_vpc" "vpc" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = [local.vpc_name]
   }
 }
@@ -47,9 +47,9 @@ module "albs" {
   source = "../modules/alb"
 
   vpc_id = data.aws_vpc.vpc.id
-  
-  intenal_albs = local.intenal_albs
-  target_groups = local.target_groups
+
+  intenal_albs                = local.intenal_albs
+  target_groups               = local.target_groups
   listener_internal_alb_green = local.listener_internal_alb_green
 }
 

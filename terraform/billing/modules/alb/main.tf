@@ -5,14 +5,14 @@
 resource "aws_lb" "intenal_alb" {
   for_each = var.intenal_albs
 
-  name = each.value.name
-  internal = true
+  name               = each.value.name
+  internal           = true
   load_balancer_type = "application"
 
   ip_address_type = each.value.ip_address_type
 
   security_groups = each.value.security_groups
-  subnets = each.value.subnets
+  subnets         = each.value.subnets
 
   tags = {
     Name = each.value.name

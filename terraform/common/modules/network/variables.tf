@@ -1,18 +1,18 @@
 variable "name" {
-    description = "Name"
-    type        = string
+  description = "Name"
+  type        = string
 }
 
 variable "cidr_block" {
-    description = "VPCのCIDR"
-    type        = string
+  description = "VPCのCIDR"
+  type        = string
 }
 
 variable "public_subnets" {
-    description = "public subnetのmap"
+  description = "public subnetのmap"
 }
 variable "private_subnets" {
-    description = "private subnetのmap"
+  description = "private subnetのmap"
 }
 
 variable "public_route_table" {}

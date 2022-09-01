@@ -20,12 +20,12 @@ terraform {
 
 # 明示的にAWSプロバイダを定義（暗黙的に理解してくれる）
 provider "aws" {
-  region  = "ap-northeast-1"
+  region = "ap-northeast-1"
 
   # 作成する全リソースに付与するタグ設定
   default_tags {
     tags = {
-      env = "dev"
+      env          = "dev"
       project_name = "dev-ecs-handson"
     }
   }
@@ -33,13 +33,13 @@ provider "aws" {
 
 # グローバルリージョンにデプロイする必要があるもの用：Multiple Providers機能
 provider "aws" {
-  alias = "virginia"
-  region  = "us-east-1"
+  alias  = "virginia"
+  region = "us-east-1"
 
   # 作成する全リソースに付与するタグ設定
   default_tags {
     tags = {
-      env = "dev"
+      env          = "dev"
       project_name = "dev-ecs-handson"
     }
   }
