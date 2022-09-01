@@ -2,13 +2,13 @@
 # NWリソース設定
 ##################
 
-# module "endpoints" {
-#   source = "../modules/endpoints"
+module "endpoints" {
+  source = "../modules/endpoints"
 
-#   vpc_id = data.aws_vpc.vpc.id
+  vpc_id = data.aws_vpc.vpc.id
   
-#   endpoints = local.endpoints
-# }
+  endpoints = local.endpoints
+}
 
 ### data
 # vpc id
