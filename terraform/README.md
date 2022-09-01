@@ -22,3 +22,6 @@ Cloud9用に作成したIAMロールをアタッチする方法がわからな�
 
 Coud9の[AMTC無効化](https://dev.classmethod.jp/articles/execute-aws-cli-with-iam-role-on-cloud9/#toc-2)も手動でお願いします。
 
+
+## commit
+`$ terraform fmt -recursive`してからコミットしましょう！
