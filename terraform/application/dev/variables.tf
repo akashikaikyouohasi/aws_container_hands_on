@@ -24,7 +24,10 @@ locals {
       awslogs_group     = "/dev-ecs-handson/sbcntr-backend-def"
       ecs_task_iam_name = "EcsTaskRole"
     }
-
+    cluster = {
+      name = "sbcntr-ecs-backend-cluster"
+      
+    }
 
   }
   ecs_frontend = {

@@ -86,3 +86,14 @@ resource "aws_cloudwatch_log_group" "backend" {
   retention_in_days = 30
 }
 
+#####################
+# ECS Cluster
+#####################
+resource "aws_ecs_cluster" "backend" {
+  name = var.ecs_backend.cluster.name
+  setting {
+    name = "containerInsights"
+    value = "enabled"
+  }
+  
+}
