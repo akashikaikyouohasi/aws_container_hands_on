@@ -27,3 +27,11 @@ module "ecs" {
   ecs_backend  = local.ecs_backend
   ecs_frontend = local.ecs_frontend
 }
+
+output "codedeploy" {
+  value = module.codedeploy
+}
+
+output "ecs" {
+  value = module.ecs
+}
