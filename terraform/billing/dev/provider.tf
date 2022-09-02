@@ -13,7 +13,7 @@ terraform {
   # tfstate(状態管理用ファイル)をS3に保存する設定
   backend "s3" {
     bucket = "tfstate-terraform-20211204"
-    key    = "dev-ecs-handson/billing/dev/terraform.tfstate"
+    key    = "dev-ecs-handson/dev/billing.tfstate"
     region = "ap-northeast-1"
   }
 }
