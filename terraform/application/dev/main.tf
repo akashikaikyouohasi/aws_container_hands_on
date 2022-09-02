@@ -24,6 +24,6 @@ module "codedeploy" {
 module "ecs" {
   source = "../modules/ecs"
 
-  ecs_backend = local.ecs_backend
+  ecs_backend  = local.ecs_backend
   ecs_frontend = local.ecs_frontend
 }
