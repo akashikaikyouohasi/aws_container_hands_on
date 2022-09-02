@@ -92,8 +92,8 @@ resource "aws_cloudwatch_log_group" "backend" {
 resource "aws_ecs_cluster" "backend" {
   name = var.ecs_backend.cluster.name
   setting {
-    name = "containerInsights"
+    name  = "containerInsights"
     value = "enabled"
   }
-  
+
 }

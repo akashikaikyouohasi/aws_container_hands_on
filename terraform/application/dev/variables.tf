@@ -26,7 +26,7 @@ locals {
     }
     cluster = {
       name = "sbcntr-ecs-backend-cluster"
-      
+
     }
 
   }
