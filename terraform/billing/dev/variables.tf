@@ -85,3 +85,27 @@ locals {
     tg       = "internal_alb_green"
   }
 }
+
+#####################
+# ECS Service
+#####################
+locals {
+  backend_ecs_service = {
+    name            = "sbcntr-ecs-backend-service"
+    task_definition = data.terraform_remote_state.application.outputs.ecs.ecs_task_definition_backend
+    cluster         = data.terraform_remote_state.application.outputs.ecs.ecs_cluster_backend
+
+    subnets = [
+      data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-container-1a"],
+      data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-container-1c"]
+    ]
+    security_groups = [
+      data.terraform_remote_state.common.outputs.vpc.sg["backend"]
+    ]
+
+    # タスクの数
+    desire_count = 0
+
+    codedeploy_role = data.terraform_remote_state.application.outputs.codedeploy.codedeploy_role
+  }
+}

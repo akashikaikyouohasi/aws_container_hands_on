@@ -13,7 +13,7 @@ locals {
 locals {
   ecs_backend = {
     task_definition = {
-      name           = "sbcntr-backend-def"
+      name           = "sbcntr-ecs-backend-def"
       container_name = "app"
       memory_soft    = 512
       cpu            = 256

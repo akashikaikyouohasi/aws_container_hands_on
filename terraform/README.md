@@ -17,6 +17,7 @@ ECSクラスター・タスクなど、関係するもの
 - Inteface型のVPCエンドポイント
   - ECR(dkr,api)
   - CloudWatch Logs
+- ECSのサービス
 
 
 ## 注意点

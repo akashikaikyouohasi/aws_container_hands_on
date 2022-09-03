@@ -1,5 +1,5 @@
 resource "aws_vpc_endpoint" "interface_endpoints" {
-  for_each = var.endpoints
+  for_each = var.interface_endpoints
 
   vpc_id              = var.vpc_id
   service_name        = each.value.service_name
