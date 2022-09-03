@@ -104,8 +104,11 @@ locals {
     ]
 
     # タスクの数
-    desire_count = 0
+    desire_count = 2
 
-    codedeploy_role = data.terraform_remote_state.application.outputs.codedeploy.codedeploy_role
+    codedeploy_name                            = "sbcntr-ecs-backend-cluster"
+    codedeploy_role                            = data.terraform_remote_state.application.outputs.codedeploy.codedeploy_role
+    blue_green_deployment_wait_time_in_minutes = 10
+    termination_wait_time_in_minutes           = 60
   }
 }
