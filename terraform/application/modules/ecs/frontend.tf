@@ -1,6 +1,7 @@
 # #####################
 # # ECS Task
 # #####################
+# billingで作成するため、ここでは利用していない
 # resource "aws_ecs_task_definition" "frontend" {
 #   # タスク定義名
 #   family                   = var.ecs_frontend.task_definition.name
