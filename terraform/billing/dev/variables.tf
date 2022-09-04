@@ -110,5 +110,8 @@ locals {
     codedeploy_role                            = data.terraform_remote_state.application.outputs.codedeploy.codedeploy_role
     blue_green_deployment_wait_time_in_minutes = 10
     termination_wait_time_in_minutes           = 60
+
+    namespace_id = data.terraform_remote_state.common.outputs.cloudmap.cloudmap_local.id
+    vpc_id       = data.terraform_remote_state.common.outputs.vpc.vpc_id
   }
 }

@@ -39,6 +39,10 @@ resource "aws_ecs_service" "backend" {
     container_port   = 80
   }
 
+  # サービスの検出
+  service_registries {
+    registry_arn = aws_service_discovery_service.backend.arn
+  }
 
   lifecycle {
     ignore_changes = [desired_count]
@@ -102,5 +106,30 @@ resource "aws_codedeploy_deployment_group" "backend" {
   auto_rollback_configuration {
     enabled = true
     events  = ["DEPLOYMENT_FAILURE"]
+  }
+}
+
+##################
+# Cloud Map
+##################
+resource "aws_service_discovery_service" "backend" {
+  name = var.backend_ecs_service.name
+
+  dns_config {
+    # 名前空間ID
+    namespace_id = var.backend_ecs_service.namespace_id
+
+    # DNSルーティングポリシー
+    routing_policy = "MULTIVALUE" #複数値解答ルーティング
+    dns_records {
+      ttl  = 60
+      type = "A"
+    }
+  }
+
+  # カスタムヘルスチェックの設定
+  health_check_custom_config {
+    # 失敗しきい値
+    failure_threshold = 1
   }
 }

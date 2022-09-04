@@ -225,3 +225,11 @@ locals {
   }
 }
 
+#####################
+# Cloud Map
+#####################
+locals {
+  cloudmap = {
+    name = "local"
+  }
+}
