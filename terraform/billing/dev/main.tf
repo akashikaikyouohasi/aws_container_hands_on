@@ -94,5 +94,8 @@ module "ecs_service" {
   backend_alb_target_group_green = module.alb.intenal_alb_target_group["sbcntr-tg-sbcntrdemo-green"]
   backend_alb_lister_blue        = module.alb.intenal_alb_listener_blue
   backend_alb_lister_green       = module.alb.intenal_alb_listener_green
+
+  ecs_task_role = data.terraform_remote_state.application.outputs.ecs.ecs_task.arn
+  ecs_frontend  = local.ecs_frontend
 }
 
