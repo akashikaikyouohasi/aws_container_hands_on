@@ -92,5 +92,7 @@ module "ecs_service" {
   backend_ecs_service            = local.backend_ecs_service
   backend_alb_target_group       = module.alb.intenal_alb_target_group["sbcntr-tg-sbcntrdemo-blue"]
   backend_alb_target_group_green = module.alb.intenal_alb_target_group["sbcntr-tg-sbcntrdemo-green"]
+  backend_alb_lister_blue        = module.alb.intenal_alb_listener_blue
+  backend_alb_lister_green       = module.alb.intenal_alb_listener_green
 }
 

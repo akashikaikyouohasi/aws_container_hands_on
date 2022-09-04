@@ -45,3 +45,13 @@ module "cloud9" {
 output "cloud9" {
   value = module.cloud9
 }
+
+# Cloud Map
+module "cloudmap" {
+  source   = "../modules/cloudmap"
+  cloudmap = local.cloudmap
+  vpc_id   = module.network.vpc_id
+}
+output "cloudmap" {
+  value = module.cloudmap
+}
