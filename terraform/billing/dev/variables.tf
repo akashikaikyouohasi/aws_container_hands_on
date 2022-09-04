@@ -48,10 +48,10 @@ locals {
 }
 
 #####################
-# ALB
+# Internal ALB
 #####################
 locals {
-  intenal_albs = {
+  internal_albs = {
     internal_alb = {
       name            = "sbcntr-alb-internal"
       ip_address_type = "ipv4"
@@ -85,6 +85,49 @@ locals {
     tg       = "internal_alb_green"
   }
 }
+#####################
+# Frontend ALB
+#####################
+locals {
+  frontend_albs = {
+    frontend_alb = {
+      name            = "sbcntr-alb-ingress-frontend"
+      ip_address_type = "ipv4"
+      subnets         = [
+        data.terraform_remote_state.common.outputs.vpc.public_subnets["sbcntr-subnet-public-ingress-1a"],
+        data.terraform_remote_state.common.outputs.vpc.public_subnets["sbcntr-subnet-public-ingress-1c"]
+      ]
+      security_groups = [
+        data.terraform_remote_state.common.outputs.vpc.sg["ingress"]
+      ]
+      lister = {
+        port       = "80"
+        protocol   = "HTTP"
+        default_tg = "frontend_alb_blue"
+      }
+    }
+  }
+  target_group_frontend = {
+    frontend_alb_blue = {
+      lb           = "frontend_alb"
+      name         = "sbcntr-tg-frontend-blue"
+      health_check = "/healthcheck"
+      port         = "80"
+    }
+    frontend_alb_green = {
+      lb           = "frontend_alb"
+      name         = "sbcntr-tg-frontend-green"
+      health_check = "/healthcheck"
+      port         = "80"
+    }
+  }
+  listener_frontend_alb_green = {
+    lb       = "frontend_alb"
+    port     = "10080"
+    protocol = "HTTP"
+    tg       = "frontend_alb_green"
+  }
+}
 
 #####################
 # ECS Service
@@ -114,6 +157,31 @@ locals {
     namespace_id = data.terraform_remote_state.common.outputs.cloudmap.cloudmap_local.id
     vpc_id       = data.terraform_remote_state.common.outputs.vpc.vpc_id
   }
+
+  frontend_ecs_service = {
+    name            = "sbcntr-ecs-frontend-service"
+    task_definition = module.ecs_service.ecs_task_definition_frontend
+    cluster         = data.terraform_remote_state.application.outputs.ecs.ecs_cluster_frontend
+
+    subnets = [
+      data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-container-1a"],
+      data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-container-1c"]
+    ]
+    security_groups = [
+      data.terraform_remote_state.common.outputs.vpc.sg["frontend"]
+    ]
+
+    # タスクの数
+    desire_count = 1
+
+    codedeploy_name                            = "sbcntr-ecs-frontend-cluster"
+    codedeploy_role                            = data.terraform_remote_state.application.outputs.codedeploy.codedeploy_role
+    blue_green_deployment_wait_time_in_minutes = 10
+    termination_wait_time_in_minutes           = 60
+
+    namespace_id = data.terraform_remote_state.common.outputs.cloudmap.cloudmap_local.id
+    vpc_id       = data.terraform_remote_state.common.outputs.vpc.vpc_id
+  }
 }
 
 #####################
@@ -130,7 +198,7 @@ locals {
       repository_url = data.terraform_remote_state.common.outputs.ecr.ecr_repositories_uri["sbcntr-frontend"]
       image_tag      = "v1"
 
-      backendhost = module.alb.intenal_alb.internal_alb.dns_name
+      backendhost = module.alb.internal_alb.internal_alb.dns_name
 
       awslogs_group     = "/dev-ecs-handson/sbcntr-frontend-def"
       ecs_task_iam_name = "EcsTaskRole"

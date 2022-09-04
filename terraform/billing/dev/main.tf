@@ -74,9 +74,13 @@ module "alb" {
 
   vpc_id = data.aws_vpc.vpc.id
 
-  intenal_albs                = local.intenal_albs
+  internal_albs                = local.internal_albs
   target_groups               = local.target_groups
   listener_internal_alb_green = local.listener_internal_alb_green
+
+  frontend_albs                = local.frontend_albs
+  target_group_frontend               = local.target_group_frontend
+  listener_frontend_alb_green = local.listener_frontend_alb_green
 }
 
 output "alb" {
@@ -90,12 +94,21 @@ module "ecs_service" {
   source = "../modules/ecs_service"
 
   backend_ecs_service            = local.backend_ecs_service
-  backend_alb_target_group       = module.alb.intenal_alb_target_group["sbcntr-tg-sbcntrdemo-blue"]
-  backend_alb_target_group_green = module.alb.intenal_alb_target_group["sbcntr-tg-sbcntrdemo-green"]
-  backend_alb_lister_blue        = module.alb.intenal_alb_listener_blue
-  backend_alb_lister_green       = module.alb.intenal_alb_listener_green
+  backend_alb_target_group       = module.alb.internal_alb_target_group["sbcntr-tg-sbcntrdemo-blue"]
+  backend_alb_target_group_green = module.alb.internal_alb_target_group["sbcntr-tg-sbcntrdemo-green"]
+  backend_alb_lister_blue        = module.alb.internal_alb_listener_blue
+  backend_alb_lister_green       = module.alb.internal_alb_listener_green
+
+  frontend_ecs_service            = local.frontend_ecs_service
+  frontend_alb_target_group       = module.alb.frontend_alb_target_group["sbcntr-tg-frontend-blue"]
+  frontend_alb_target_group_green = module.alb.frontend_alb_target_group["sbcntr-tg-frontend-green"]
+  frontend_alb_lister_blue        = module.alb.frontend_alb_listener_blue
+  frontend_alb_lister_green       = module.alb.frontend_alb_listener_green
 
   ecs_task_role = data.terraform_remote_state.application.outputs.ecs.ecs_task.arn
   ecs_frontend  = local.ecs_frontend
 }
 
+output "ecs_service" {
+  value = module.ecs_service
+}
