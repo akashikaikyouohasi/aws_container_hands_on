@@ -93,7 +93,7 @@ locals {
     frontend_alb = {
       name            = "sbcntr-alb-ingress-frontend"
       ip_address_type = "ipv4"
-      subnets         = [
+      subnets = [
         data.terraform_remote_state.common.outputs.vpc.public_subnets["sbcntr-subnet-public-ingress-1a"],
         data.terraform_remote_state.common.outputs.vpc.public_subnets["sbcntr-subnet-public-ingress-1c"]
       ]
