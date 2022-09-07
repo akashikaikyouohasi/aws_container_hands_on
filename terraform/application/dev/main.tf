@@ -14,24 +14,37 @@ data "terraform_remote_state" "common" {
 ##################
 # CodeDeploy
 ##################
-
 module "codedeploy" {
   source = "../modules/codedeploy"
 
   iam = local.iam
 }
+output "codedeploy" {
+  value = module.codedeploy
+}
 
+##################
+# ECS
+##################
 module "ecs" {
   source = "../modules/ecs"
 
   ecs_backend  = local.ecs_backend
   ecs_frontend = local.ecs_frontend
 }
-
-output "codedeploy" {
-  value = module.codedeploy
-}
-
 output "ecs" {
   value = module.ecs
+}
+
+##################
+# Aurora
+##################
+module "aurora" {
+  source = "../modules/aurora"
+
+  aurora = local.aurora
+}
+output "aurora" {
+  value     = module.aurora
+  sensitive = true
 }

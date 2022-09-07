@@ -52,3 +52,40 @@ locals {
     }
   }
 }
+
+#####################
+# Aurora
+#####################
+locals {
+  aurora = {
+    db_subnet_group_name = "sbcntr-rds-subnet-group"
+    subnet_ids = [
+      data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-db-1a"],
+      data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-db-1c"]
+    ]
+
+    engine             = "aurora-mysql"
+    engine_version     = "5.7.mysql_aurora.2.10.2"
+    cluster_identifier = "sbcntr-db"
+    master_username    = "admin"
+    master_password    = "testtesttest" #要暗号化
+
+    instance_class = "db.t3.small"
+    instances = {
+      db1 = {
+        identifier = "sbcntr-db-instance-1"
+      }
+      db2 = {
+        identifier = "sbcntr-db-instance-2"
+      }
+    }
+
+    vpc_security_group_ids = [
+      data.terraform_remote_state.common.outputs.vpc.sg["db"]
+    ]
+    database_name = "sbcntapp"
+
+    backup_retention_period = 1
+    monitoring_iam_role     = "sbcntr-rds-monitoring-role"
+  }
+}
