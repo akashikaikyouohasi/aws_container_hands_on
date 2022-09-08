@@ -89,8 +89,7 @@ resource "aws_rds_cluster" "db" {
   # ログのエクスポート
   enabled_cloudwatch_logs_exports = ["audit", "error", "slowquery"]
   # IAMロール
-
-  # マイナーバージョン自動アップグレードの有
+  #
 
   # メンテナンスウィンドウ
   preferred_maintenance_window = "Sat:17:00-Sat:17:30"

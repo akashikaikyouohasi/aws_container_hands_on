@@ -83,7 +83,7 @@ locals {
     vpc_security_group_ids = [
       data.terraform_remote_state.common.outputs.vpc.sg["db"]
     ]
-    database_name = "sbcntapp"
+    database_name = "sbcntrapp"
 
     backup_retention_period = 1
     monitoring_iam_role     = "sbcntr-rds-monitoring-role"
