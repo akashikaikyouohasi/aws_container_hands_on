@@ -55,3 +55,13 @@ module "cloudmap" {
 output "cloudmap" {
   value = module.cloudmap
 }
+
+# Systems Manager Parameter Store
+module "parameter_store" {
+  source           = "../modules/parameter_store"
+  secret_parameter = local.secret_parameter
+}
+output "parameter_store" {
+  value = module.parameter_store
+  sensitive = true
+}

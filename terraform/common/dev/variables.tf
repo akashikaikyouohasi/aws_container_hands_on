@@ -233,3 +233,19 @@ locals {
     name = "local"
   }
 }
+
+#####################
+# Systems Manager Parameter Store
+####################
+locals {
+  secret_parameter = {
+    db_master_user = {
+      name  = "/database/master/user"
+      value = "admin"
+    }
+    db_master_password = {
+      name  = "/database/master/password"
+      value = "tmp"
+    }
+  }
+}

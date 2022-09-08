@@ -67,8 +67,8 @@ locals {
     engine             = "aurora-mysql"
     engine_version     = "5.7.mysql_aurora.2.10.2"
     cluster_identifier = "sbcntr-db"
-    master_username    = "admin"
-    master_password    = "testtesttest" #要暗号化
+    master_username    = data.terraform_remote_state.common.outputs.parameter_store.secret_parameter["db_master_user"].value
+    master_password    = data.terraform_remote_state.common.outputs.parameter_store.secret_parameter["db_master_password"].value
 
     instance_class = "db.t3.small"
     instances = {
