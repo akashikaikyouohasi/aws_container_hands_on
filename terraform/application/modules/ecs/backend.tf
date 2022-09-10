@@ -39,22 +39,22 @@ resource "aws_ecs_task_definition" "backend" {
       #基本
       essential = true
       # 環境変数
-      environment = [
+      secrets = [
         {
           name: "DB_HOST", 
-          value: "${var.ecs_backend.task_definition.secrets_manager}:host::"
+          valueFrom: "${var.ecs_backend.task_definition.secrets_manager}:host::"
         },
         {
           name: "DB_NAME", 
-          value: "${var.ecs_backend.task_definition.secrets_manager}:dbname::"
+          valueFrom: "${var.ecs_backend.task_definition.secrets_manager}:dbname::"
         },
         {
           name: "DB_USERNAME", 
-          value: "${var.ecs_backend.task_definition.secrets_manager}:username::"
+          valueFrom: "${var.ecs_backend.task_definition.secrets_manager}:username::"
         },
         {
           name: "DB_PASSWORD", 
-          value: "${var.ecs_backend.task_definition.secrets_manager}:password::"
+          valueFrom: "${var.ecs_backend.task_definition.secrets_manager}:password::"
         }
       ]
 
