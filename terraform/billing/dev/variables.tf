@@ -142,8 +142,9 @@ locals {
 
 #####################
 # ECS Service
-#####################
+#####################\cloud9\home
 locals {
+  ### Backend ###
   backend_ecs_service = {
     name            = "sbcntr-ecs-backend-service"
     task_definition = data.terraform_remote_state.application.outputs.ecs.ecs_task_definition_backend
@@ -158,7 +159,7 @@ locals {
     ]
 
     # タスクの数
-    desire_count = 2
+    desire_count = 1
 
     codedeploy_name                            = "sbcntr-ecs-backend-cluster"
     codedeploy_role                            = data.terraform_remote_state.application.outputs.codedeploy.codedeploy_role
@@ -169,6 +170,7 @@ locals {
     vpc_id       = data.terraform_remote_state.common.outputs.vpc.vpc_id
   }
 
+  ### Frontend ###
   frontend_ecs_service = {
     name            = "sbcntr-ecs-frontend-service"
     task_definition = module.ecs_service.ecs_task_definition_frontend
