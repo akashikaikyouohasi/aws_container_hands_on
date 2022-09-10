@@ -1,0 +1,133 @@
+
+#################
+# aurora
+#################
+mysql -h sbcntr-db.cluster-xxxxxxxxxxxx.ap-northeast-1.rds.amazonaws.com -u admin -p                                                                                 
+
+# MySQL
+MySQL [(none)]> select Host, User From mysql.user;
++-----------+-----------+
+| Host      | User      |
++-----------+-----------+
+| %         | admin     |
+| localhost | mysql.sys |
+| localhost | rdsadmin  |
++-----------+-----------+
+3 rows in set (0.01 sec)
+
+# アプリケーションユーザー作成
+MySQL [(none)]> CREATE USER sbcntruser@'%' IDENTIFIED BY 'sbcntrEncP';
+Query OK, 0 rows affected (0.01 sec)
+
+MySQL [(none)]> GRANT ALL ON sbcntrapp.* TO sbcntruser@'%' WITH GRANT OPTION;
+Query OK, 0 rows affected (0.01 sec)
+
+# データ投入用ユーザー
+MySQL [(none)]> CREATE USER migrate@'%' IDENTIFIED BY 'sbcntrMigrate';
+Query OK, 0 rows affected (0.01 sec)
+
+MySQL [(none)]> GRANT ALL ON sbcntrapp.* TO migrate@'%' WITH GRANT OPTION;
+Query OK, 0 rows affected (0.01 sec)
+
+MySQL [(none)]> GRANT ALL ON `prisma_migrate_shadow_db%`.* TO migrate@'%' WITH GRANT OPTION;                                                                                              
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [(none)]> select Host, User From mysql.user;
++-----------+------------+
+| Host      | User       |
++-----------+------------+
+| %         | admin      |
+| %         | migrate    |
+| %         | sbcntruser |
+| localhost | mysql.sys  |
+| localhost | rdsadmin   |
++-----------+------------+
+5 rows in set (0.00 sec)
+
+MySQL [(none)]> quit
+Bye
+
+# アプリケーションユーザーログイン確認
+mysql -h sbcntr-db.cluster-xxxxxxxxxxxx.ap-northeast-1.rds.amazonaws.com -u sbcntruser -p
+
+MySQL [(none)]> exit
+Bye
+
+# データ投入用ユーザーログイン確認
+mysql -h sbcntr-db.cluster-xxxxxxxxxxxx.ap-northeast-1.rds.amazonaws.com -u migrate -p
+
+# DBとテーブル確認
+MySQL [(none)]> use sbcntrapp;
+Database changed
+
+MySQL [sbcntrapp]> show tables;
+Empty set (0.00 sec)
+
+MySQL [(none)]> exit
+Bye
+
+# DB Insert
+$ cd /home/ec2-user/environment/sbcntr-frontend/
+$ git checkout main
+$ export DB_USERNAME=migrate
+$ export DB_PASSWORD=sbcntrMigrate
+$ export DB_HOST=sbcntr-db.cluster-xxxxxxxxxxxx.ap-northeast-1.rds.amazonaws.com
+$ export DB_NAME=sbcntrapp
+$ npm run migrate:dev
+ ? Name of migration › init
+ ✔ Generated Prisma Client (2.19.0) to ./node_modules/@prisma/client in 117ms
+
+#$ nvm install 14.15.1
+#$ nvm use 14.15.1
+$ nvm use
+$ npm run seed
+ > Seeding...
+ ✔ Done seeding
+
+# テーブル確認
+$ mysql -h sbcntr-db.cluster-xxxxxxxxxxxx.ap-northeast-1.rds.amazonaws.com -u sbcntruser -p   
+
+MySQL [(none)]> use sbcntrapp;
+Database changed
+
+MySQL [sbcntrapp]> show tables;
++---------------------+
+| Tables_in_sbcntrapp |
++---------------------+
+| Item                |
+| Notification        |
+| Session             |
+| User                |
+| _prisma_migrations  |
++---------------------+
+5 rows in set (0.00 sec)
+
+MySQL [sbcntrapp]> select * from Notification;
++----+-------------------------+-------------------------+---------+-----------------------------------------------------------------+-------------+--------+
+| id | createdAt               | updatedAt               | title   | description                                                     | category    | unread |
++----+-------------------------+-------------------------+---------+-----------------------------------------------------------------+-------------+--------+
+|  1 | 2022-09-10 03:32:35.451 | 2022-09-10 03:32:35.451 | 通知1   | コンテナアプリケーションの作成の時間です。                      | information |      1 |
+|  2 | 2022-09-10 03:32:35.518 | 2022-09-10 03:32:35.519 | 通知2   | コンテナアプリケーションの作成の時間です。                      | information |      1 |
++----+-------------------------+-------------------------+---------+-----------------------------------------------------------------+-------------+--------+
+2 rows in set (0.00 sec)
+
+MySQL [sbcntrapp]> select * from Item;
++----+-------------------------+-------------------------+--------+---------------------+-------------------+----------+
+| id | createdAt               | updatedAt               | name   | title               | img               | favorite |
++----+-------------------------+-------------------------+--------+---------------------+-------------------+----------+
+|  1 | 2022-09-10 03:32:35.180 | 2022-09-10 03:32:35.180 | Flower | Flower              | /flower-park.jpeg |        1 |
+|  2 | 2022-09-10 03:32:35.214 | 2022-09-10 03:32:35.214 | Apple  | My apple            | /apple.jpeg       |        0 |
+|  3 | 2022-09-10 03:32:35.275 | 2022-09-10 03:32:35.275 | Goods  | My goods            | /goods.jpeg       |        0 |
+|  4 | 2022-09-10 03:32:35.330 | 2022-09-10 03:32:35.330 | Dice   | Cool dices          | /dice.jpeg        |        1 |
+|  5 | 2022-09-10 03:32:35.390 | 2022-09-10 03:32:35.390 | Darts  | Antique darts board | /darts.jpeg       |        0 |
++----+-------------------------+-------------------------+--------+---------------------+-------------------+----------+
+5 rows in set (0.01 sec)
+
+MySQL [sbcntrapp]> select * from Session;
+Empty set (0.01 sec)
+
+MySQL [sbcntrapp]> select * from User;
+Empty set (0.00 sec)
+
+
+

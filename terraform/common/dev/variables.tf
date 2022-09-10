@@ -156,6 +156,13 @@ locals {
       sg                       = "db"
       port                     = 3306
       protocol                 = "tcp"
+      source_security_group_id = "frontend"
+      cidr_blocks              = null
+    }
+    db_3 = {
+      sg                       = "db"
+      port                     = 3306
+      protocol                 = "tcp"
       source_security_group_id = "management"
       cidr_blocks              = null
     }
@@ -231,5 +238,21 @@ locals {
 locals {
   cloudmap = {
     name = "local"
+  }
+}
+
+#####################
+# Systems Manager Parameter Store
+####################
+locals {
+  secret_parameter = {
+    db_master_user = {
+      name  = "/database/master/user"
+      value = "admin"
+    }
+    db_master_password = {
+      name  = "/database/master/password"
+      value = "tmp"
+    }
   }
 }

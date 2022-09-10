@@ -74,12 +74,12 @@ module "alb" {
 
   vpc_id = data.aws_vpc.vpc.id
 
-  internal_albs                = local.internal_albs
+  internal_albs               = local.internal_albs
   target_groups               = local.target_groups
   listener_internal_alb_green = local.listener_internal_alb_green
 
-  frontend_albs                = local.frontend_albs
-  target_group_frontend               = local.target_group_frontend
+  frontend_albs               = local.frontend_albs
+  target_group_frontend       = local.target_group_frontend
   listener_frontend_alb_green = local.listener_frontend_alb_green
 }
 

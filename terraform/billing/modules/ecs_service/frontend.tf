@@ -49,6 +49,24 @@ resource "aws_ecs_task_definition" "frontend" {
           value = "http://${var.ecs_frontend.task_definition.backendhost}"
         }
       ]
+      secrets = [
+        {
+          name : "DB_HOST",
+          valueFrom : "${var.ecs_frontend.task_definition.secrets_manager}:host::"
+        },
+        {
+          name : "DB_NAME",
+          valueFrom : "${var.ecs_frontend.task_definition.secrets_manager}:dbname::"
+        },
+        {
+          name : "DB_USERNAME",
+          valueFrom : "${var.ecs_frontend.task_definition.secrets_manager}:username::"
+        },
+        {
+          name : "DB_PASSWORD",
+          valueFrom : "${var.ecs_frontend.task_definition.secrets_manager}:password::"
+        }
+      ]
 
       # 読み取り専用ルートファイルシステム
       readonlyRootFilesystem = true

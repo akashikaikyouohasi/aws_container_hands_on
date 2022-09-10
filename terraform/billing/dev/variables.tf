@@ -44,6 +44,17 @@ locals {
       subnet_ids         = data.aws_subnets.subnets["cloudwatch_logs_endpoint"].ids
       security_group_ids = data.aws_security_groups.security_groups["cloudwatch_logs_endpoint"].ids
     }
+    secretmanager_endpoint = {
+      name         = "sbcntr-vpce-secrets"
+      service_name = "com.amazonaws.ap-northeast-1.secretsmanager"
+      subnet_ids = [
+        data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-egress-1a"],
+        data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-egress-1c"]
+      ]
+      security_group_ids = [
+        data.terraform_remote_state.common.outputs.vpc.sg["egress"]
+      ]
+    }
   }
 }
 
@@ -93,7 +104,7 @@ locals {
     frontend_alb = {
       name            = "sbcntr-alb-ingress-frontend"
       ip_address_type = "ipv4"
-      subnets         = [
+      subnets = [
         data.terraform_remote_state.common.outputs.vpc.public_subnets["sbcntr-subnet-public-ingress-1a"],
         data.terraform_remote_state.common.outputs.vpc.public_subnets["sbcntr-subnet-public-ingress-1c"]
       ]
@@ -131,8 +142,9 @@ locals {
 
 #####################
 # ECS Service
-#####################
+#####################\cloud9\home
 locals {
+  ### Backend ###
   backend_ecs_service = {
     name            = "sbcntr-ecs-backend-service"
     task_definition = data.terraform_remote_state.application.outputs.ecs.ecs_task_definition_backend
@@ -147,7 +159,7 @@ locals {
     ]
 
     # タスクの数
-    desire_count = 2
+    desire_count = 1
 
     codedeploy_name                            = "sbcntr-ecs-backend-cluster"
     codedeploy_role                            = data.terraform_remote_state.application.outputs.codedeploy.codedeploy_role
@@ -158,6 +170,7 @@ locals {
     vpc_id       = data.terraform_remote_state.common.outputs.vpc.vpc_id
   }
 
+  ### Frontend ###
   frontend_ecs_service = {
     name            = "sbcntr-ecs-frontend-service"
     task_definition = module.ecs_service.ecs_task_definition_frontend
@@ -196,9 +209,10 @@ locals {
       cpu            = 256
 
       repository_url = data.terraform_remote_state.common.outputs.ecr.ecr_repositories_uri["sbcntr-frontend"]
-      image_tag      = "v1"
+      image_tag      = "dbv1"
 
-      backendhost = module.alb.internal_alb.internal_alb.dns_name
+      backendhost     = module.alb.internal_alb.internal_alb.dns_name
+      secrets_manager = data.terraform_remote_state.application.outputs.aurora.secretsmanager_secret_db
 
       awslogs_group     = "/dev-ecs-handson/sbcntr-frontend-def"
       ecs_task_iam_name = "EcsTaskRole"
