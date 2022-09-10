@@ -45,9 +45,9 @@ locals {
       security_group_ids = data.aws_security_groups.security_groups["cloudwatch_logs_endpoint"].ids
     }
     secretmanager_endpoint = {
-      name               = "sbcntr-vpce-secrets"
-      service_name       = "com.amazonaws.ap-northeast-1.secretsmanager"
-      subnet_ids         = [
+      name         = "sbcntr-vpce-secrets"
+      service_name = "com.amazonaws.ap-northeast-1.secretsmanager"
+      subnet_ids = [
         data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-egress-1a"],
         data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-egress-1c"]
       ]
@@ -211,7 +211,7 @@ locals {
       repository_url = data.terraform_remote_state.common.outputs.ecr.ecr_repositories_uri["sbcntr-frontend"]
       image_tag      = "dbv1"
 
-      backendhost = module.alb.internal_alb.internal_alb.dns_name
+      backendhost     = module.alb.internal_alb.internal_alb.dns_name
       secrets_manager = data.terraform_remote_state.application.outputs.aurora.secretsmanager_secret_db
 
       awslogs_group     = "/dev-ecs-handson/sbcntr-frontend-def"

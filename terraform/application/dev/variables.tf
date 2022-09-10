@@ -90,7 +90,7 @@ locals {
     monitoring_iam_role     = "sbcntr-rds-monitoring-role"
 
     secretmanager = {
-      name = "sbcntr/mysql"
+      name     = "sbcntr/mysql"
       username = "sbcntruser"
       password = "sbcntrEncP"
     }

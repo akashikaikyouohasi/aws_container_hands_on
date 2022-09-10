@@ -9,20 +9,20 @@ data "aws_iam_policy" "AmazonECSTaskExecutionRolePolicy" {
 
 # Secrets Manager読み込み
 resource "aws_iam_policy" "secrets_manager" {
-  name = "sbcntr-GettingSecretsPolicy"
+  name   = "sbcntr-GettingSecretsPolicy"
   policy = data.aws_iam_policy_document.secrets_manager.json
 }
 data "aws_iam_policy_document" "secrets_manager" {
-    statement{
-        sid = "GetSecretForECS"
-        effect = "Allow"
-        actions = [
-            "secretsmanager:GetSecretValue"
-        ]
-        resources = [
-            "*"
-        ]
-    }
+  statement {
+    sid    = "GetSecretForECS"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetSecretValue"
+    ]
+    resources = [
+      "*"
+    ]
+  }
 }
 
 

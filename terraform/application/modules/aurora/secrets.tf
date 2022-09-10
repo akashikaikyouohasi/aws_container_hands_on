@@ -3,15 +3,15 @@
 ####################
 # キーと値のペア
 locals {
-    db_secret = {
-        username = var.aurora.secretmanager.username
-        password = var.aurora.secretmanager.password
-        engine = "mysql"
-        host = aws_rds_cluster.db.endpoint
-        port = "3306"
-        dbname = var.aurora.database_name
-        dbClusterIdentifier = var.aurora.cluster_identifier
-    }
+  db_secret = {
+    username            = var.aurora.secretmanager.username
+    password            = var.aurora.secretmanager.password
+    engine              = "mysql"
+    host                = aws_rds_cluster.db.endpoint
+    port                = "3306"
+    dbname              = var.aurora.database_name
+    dbClusterIdentifier = var.aurora.cluster_identifier
+  }
 }
 
 # シークレット

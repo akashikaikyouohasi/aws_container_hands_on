@@ -51,20 +51,20 @@ resource "aws_ecs_task_definition" "frontend" {
       ]
       secrets = [
         {
-          name: "DB_HOST", 
-          valueFrom: "${var.ecs_frontend.task_definition.secrets_manager}:host::"
+          name : "DB_HOST",
+          valueFrom : "${var.ecs_frontend.task_definition.secrets_manager}:host::"
         },
         {
-          name: "DB_NAME", 
-          valueFrom: "${var.ecs_frontend.task_definition.secrets_manager}:dbname::"
+          name : "DB_NAME",
+          valueFrom : "${var.ecs_frontend.task_definition.secrets_manager}:dbname::"
         },
         {
-          name: "DB_USERNAME", 
-          valueFrom: "${var.ecs_frontend.task_definition.secrets_manager}:username::"
+          name : "DB_USERNAME",
+          valueFrom : "${var.ecs_frontend.task_definition.secrets_manager}:username::"
         },
         {
-          name: "DB_PASSWORD", 
-          valueFrom: "${var.ecs_frontend.task_definition.secrets_manager}:password::"
+          name : "DB_PASSWORD",
+          valueFrom : "${var.ecs_frontend.task_definition.secrets_manager}:password::"
         }
       ]
 

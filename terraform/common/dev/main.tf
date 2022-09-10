@@ -62,6 +62,6 @@ module "parameter_store" {
   secret_parameter = local.secret_parameter
 }
 output "parameter_store" {
-  value = module.parameter_store
+  value     = module.parameter_store
   sensitive = true
 }
