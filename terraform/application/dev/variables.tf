@@ -21,12 +21,13 @@ locals {
       repository_url = data.terraform_remote_state.common.outputs.ecr.ecr_repositories_uri["sbcntr-backend"]
       image_tag      = "v1"
 
+      secrets_manager = module.aurora.secretsmanager_secret_db
+
       awslogs_group     = "/dev-ecs-handson/sbcntr-backend-def"
       ecs_task_iam_name = "EcsTaskRole"
     }
     cluster = {
       name = "sbcntr-ecs-backend-cluster"
-
     }
 
   }

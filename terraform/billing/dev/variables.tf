@@ -44,6 +44,17 @@ locals {
       subnet_ids         = data.aws_subnets.subnets["cloudwatch_logs_endpoint"].ids
       security_group_ids = data.aws_security_groups.security_groups["cloudwatch_logs_endpoint"].ids
     }
+    secretmanager_endpoint = {
+      name               = "sbcntr-vpce-secrets"
+      service_name       = "com.amazonaws.ap-northeast-1.secretsmanager"
+      subnet_ids         = [
+        data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-egress-1a"],
+        data.terraform_remote_state.common.outputs.vpc.private_subnets["sbcntr-subnet-private-egress-1c"]
+      ]
+      security_group_ids = [
+        data.terraform_remote_state.common.outputs.vpc.sg["egress"]
+      ]
+    }
   }
 }
 
