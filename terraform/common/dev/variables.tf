@@ -156,6 +156,13 @@ locals {
       sg                       = "db"
       port                     = 3306
       protocol                 = "tcp"
+      source_security_group_id = "frontend"
+      cidr_blocks              = null
+    }
+    db_3 = {
+      sg                       = "db"
+      port                     = 3306
+      protocol                 = "tcp"
       source_security_group_id = "management"
       cidr_blocks              = null
     }

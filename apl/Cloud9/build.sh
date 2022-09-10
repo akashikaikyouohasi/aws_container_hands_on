@@ -57,7 +57,8 @@ docker container run --detach --publish 8080:80 ${AWS_ACCOUNT_ID}.dkr.ecr.ap-nor
 docker container ls --format "table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
 date; curl http://localhost:8080/v1/helloworld ;date 
 
-# Dcoker for frontend
+### Dcoker for frontend ###
+# DB接続なし
 cd /home/ec2-user/environment/sbcntr-frontend/
 docker image build -t sbcntr-frontend:v1 .
 docker image tag sbcntr-frontend:v1 ${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-frontend:v1
@@ -67,3 +68,12 @@ aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS
 
 aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-frontend:v1
 docker image push ${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-frontend:v1
+
+# DB接続あり
+cd /home/ec2-user/environment/sbcntr-frontend/
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+docker image build -t sbcntr-frontend .
+
+docker image tag sbcntr-frontend:latest ${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-frontend:dbv1
+aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin https://${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-frontend
+docker image push ${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-frontend:dbv1

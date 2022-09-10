@@ -209,9 +209,10 @@ locals {
       cpu            = 256
 
       repository_url = data.terraform_remote_state.common.outputs.ecr.ecr_repositories_uri["sbcntr-frontend"]
-      image_tag      = "v1"
+      image_tag      = "dbv1"
 
       backendhost = module.alb.internal_alb.internal_alb.dns_name
+      secrets_manager = data.terraform_remote_state.application.outputs.aurora.secretsmanager_secret_db
 
       awslogs_group     = "/dev-ecs-handson/sbcntr-frontend-def"
       ecs_task_iam_name = "EcsTaskRole"
