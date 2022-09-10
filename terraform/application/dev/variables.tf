@@ -87,5 +87,11 @@ locals {
 
     backup_retention_period = 1
     monitoring_iam_role     = "sbcntr-rds-monitoring-role"
+
+    secretmanager = {
+      name = "sbcntr/mysql"
+      username = "sbcntruser"
+      password = "sbcntrEncP"
+    }
   }
 }
