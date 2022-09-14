@@ -40,6 +40,7 @@ module "cloud9" {
   public_subnets   = module.network.public_subnets
   sg               = module.network.sg
   ecr_repositories = module.ecr.ecr_repositories
+  code_commit      = local.code_commit
 }
 
 output "cloud9" {
@@ -64,4 +65,13 @@ module "parameter_store" {
 output "parameter_store" {
   value     = module.parameter_store
   sensitive = true
+}
+
+# code series
+module "code_series" {
+  source      = "../modules/code_series"
+  code_commit = local.code_commit
+}
+output "code_series" {
+  value = module.code_series
 }

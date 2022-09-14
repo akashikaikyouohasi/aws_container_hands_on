@@ -256,3 +256,14 @@ locals {
     }
   }
 }
+
+#####################
+# Code Series
+#####################
+locals {
+  code_commit = {
+    backend = {
+      repository_name = "sbcntr-backend"
+    }
+  }
+}
