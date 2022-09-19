@@ -210,6 +210,10 @@ locals {
       name         = "sbcntr-frontend"
       scan_on_push = false
     }
+    base = {
+      name         = "sbcntr-base"
+      scan_on_push = false
+    }
   }
 }
 
