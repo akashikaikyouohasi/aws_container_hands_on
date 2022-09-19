@@ -1,0 +1,12 @@
+$ cd /home/ec2-user/environment/sbcntr-backend/
+$ git remote -v
+origin  https://github.com/uma-arai/sbcntr-backend.git (fetch)
+origin  https://github.com/uma-arai/sbcntr-backend.git (push)
+
+$ git remote set-url origin  https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/sbcntr-backend
+
+$ git remote -v
+origin  https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/sbcntr-backend (fetch)
+origin  https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/sbcntr-backend (push)
+
+$ git push

@@ -32,7 +32,8 @@ output "cloud9_values" {
   value = data.aws_instance.cloud9_instance
 }
 
-# IAM policy作成
+### IAM policy作成 ###
+# ECR用
 # 参考：https://docs.aws.amazon.com/ja_jp/AmazonECR/latest/userguide/security_iam_id-based-policy-examples.html#security_iam_id-based-policy-examples-access-one-bucket
 data "aws_iam_policy_document" "cloud9" {
   statement {
@@ -77,9 +78,36 @@ data "aws_iam_policy_document" "cloud9" {
   }
 }
 resource "aws_iam_policy" "cloud9" {
-  name        = "svcntr-AccessingECRRepositoryPolicy"
+  name        = "sbcntr-AccessingECRRepositoryPolicy"
   description = "Policy to access ECR repo from Cloud9 instance"
   policy      = data.aws_iam_policy_document.cloud9.json
+}
+
+# CodeCommit用
+data "aws_iam_policy_document" "code_commit" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "codecommit:BatchGet*",
+      "codecommit:BatchDescribe*",
+      "codecommit:Describe*",
+      "codecommit:Get*",
+      "codecommit:List*",
+      "codecommit:Merge*",
+      "codecommit:Put*",
+      "codecommit:Post*",
+      "codecommit:Update*",
+      "codecommit:GitPull",
+      "codecommit:GitPush"
+    ]
+    resources = [
+      var.code_commit_backend.arn
+    ]
+  }
+}
+resource "aws_iam_policy" "code_commit" {
+  name        = "sbcntr-AccessingCodeCommitPolicy"
+  policy      = data.aws_iam_policy_document.code_commit.json
 }
 
 # IAM Role
@@ -92,6 +120,7 @@ data "aws_iam_policy_document" "cloud9_assume_role_policy" {
     }
   }
 }
+
 resource "aws_iam_role" "cloud9" {
   name               = "sbcntr-cloud9-role"
   assume_role_policy = data.aws_iam_policy_document.cloud9_assume_role_policy.json
@@ -101,7 +130,13 @@ resource "aws_iam_policy_attachment" "cloud9" {
   roles      = [aws_iam_role.cloud9.name]
   policy_arn = aws_iam_policy.cloud9.arn
 }
+resource "aws_iam_policy_attachment" "code_commit" {
+  name       = "code_commit_attachment"
+  roles      = [aws_iam_role.cloud9.name]
+  policy_arn = aws_iam_policy.code_commit.arn
+}
 
+# EC2用
 resource "aws_iam_instance_profile" "cloud9" {
   name = "sbcntr-cloud9-role"
   role = aws_iam_role.cloud9.name

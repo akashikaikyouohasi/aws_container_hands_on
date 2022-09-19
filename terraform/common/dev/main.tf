@@ -40,7 +40,7 @@ module "cloud9" {
   public_subnets   = module.network.public_subnets
   sg               = module.network.sg
   ecr_repositories = module.ecr.ecr_repositories
-  code_commit      = local.code_commit
+  code_commit_backend      = module.code_series.code_commit_backend
 }
 
 output "cloud9" {
