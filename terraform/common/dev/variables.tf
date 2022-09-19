@@ -266,4 +266,9 @@ locals {
       repository_name = "sbcntr-backend"
     }
   }
+  code_build = {
+    backend = {
+      name = "sbcntr-codebuild"
+    }
+  }
 }

@@ -10,3 +10,8 @@ origin  https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/sbcntr-back
 origin  https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/sbcntr-backend (push)
 
 $ git push
+
+### buildspec.yml作成後 ###
+$ git add buildspec.yml
+$ git commit -m 'ci: add buildspec'
+$ git push

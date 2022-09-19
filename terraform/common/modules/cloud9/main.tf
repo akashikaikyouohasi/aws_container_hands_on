@@ -106,8 +106,8 @@ data "aws_iam_policy_document" "code_commit" {
   }
 }
 resource "aws_iam_policy" "code_commit" {
-  name        = "sbcntr-AccessingCodeCommitPolicy"
-  policy      = data.aws_iam_policy_document.code_commit.json
+  name   = "sbcntr-AccessingCodeCommitPolicy"
+  policy = data.aws_iam_policy_document.code_commit.json
 }
 
 # IAM Role
