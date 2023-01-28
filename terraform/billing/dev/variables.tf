@@ -142,7 +142,7 @@ locals {
 
 #####################
 # ECS Service
-#####################\cloud9\home
+#####################
 locals {
   ### Backend ###
   backend_ecs_service = {
