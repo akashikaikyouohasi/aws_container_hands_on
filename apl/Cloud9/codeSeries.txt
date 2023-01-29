@@ -15,3 +15,13 @@ $ git push
 $ git add buildspec.yml
 $ git commit -m 'ci: add buildspec'
 $ git push
+
+### appspec.yaml,taskdef.json作成後 ###
+$ git add appspec.yaml taskdef.json
+$ git commit -m 'ci: add appspec and task definition'
+$ git push
+
+### buildspec.yml修正後 ###
+$ git add buildspec.yml 
+$ git commit -m 'ci: modify buildspec'
+$ git push
