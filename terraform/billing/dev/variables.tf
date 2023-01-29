@@ -222,3 +222,29 @@ locals {
     }
   }
 }
+
+#####################
+# CodePipeline
+#####################
+locals {
+  ### Backend ###
+  codepipeline_backend = {
+    pipeline_name = "sbcntr-pipeline"
+    source = {
+      reposiroty_name = data.terraform_remote_state.common.outputs.code_series.code_commit_backend_reposiroty_name
+    }
+    codebuild = {
+      project_name = data.terraform_remote_state.common.outputs.code_series.code_build_backend_project_name
+    }
+    codedeploy = {
+      application_name = module.ecs_service.ecs_backend_codedeploy_application_name
+      deploy_group_name = module.ecs_service.ecs_backend_codedeploy_deploy_group_name
+    }
+
+  }
+
+  ### Frontend ###
+  codepipeline_frontend = {
+    # 今は何もなし
+  }
+}
