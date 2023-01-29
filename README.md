@@ -1,6 +1,8 @@
 # AWS Container Hands On
 新井様(著)・馬勝様(著)、佐々木様(監修)の「[AWSコンテナ設計・構築［本格］入門](https://www.amazon.co.jp/dp/B09DKZC1ZH/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1)」のハンズオン＋αをTerraformで実現してみるリポジトリです
 
+参考リポジトリ：[uma-arai/sbcntr-resources](https://github.com/uma-arai/sbcntr-resources)
+
 ## 機能一覧
 以下の機能を実装していきます
 
