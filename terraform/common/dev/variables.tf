@@ -204,11 +204,15 @@ locals {
   ecr = {
     backend = {
       name         = "sbcntr-backend"
-      scan_on_push = false
+      scan_on_push = true
     }
     frontend = {
       name         = "sbcntr-frontend"
-      scan_on_push = false
+      scan_on_push = true
+    }
+    base = {
+      name         = "sbcntr-base"
+      scan_on_push = true
     }
   }
 }
@@ -253,6 +257,22 @@ locals {
     db_master_password = {
       name  = "/database/master/password"
       value = "tmp"
+    }
+  }
+}
+
+#####################
+# Code Series
+#####################
+locals {
+  code_commit = {
+    backend = {
+      repository_name = "sbcntr-backend"
+    }
+  }
+  code_build = {
+    backend = {
+      name = "sbcntr-codebuild"
     }
   }
 }

@@ -38,6 +38,7 @@ ECSクラスター・タスクなど、アプリケーションのもの
   - CloudWatch Logs
 - ECSのサービス
 - CodeDeploy：これ自体にお金はかからないが、ECS/ALBと依存関係があるため
+- CodePipeline：CodeDeployに依存するため
 
 
 ### 注意点

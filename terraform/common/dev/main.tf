@@ -35,11 +35,12 @@ output "ecr" {
 
 # Cloud9
 module "cloud9" {
-  source           = "../modules/cloud9"
-  cloud9           = local.cloud9
-  public_subnets   = module.network.public_subnets
-  sg               = module.network.sg
-  ecr_repositories = module.ecr.ecr_repositories
+  source              = "../modules/cloud9"
+  cloud9              = local.cloud9
+  public_subnets      = module.network.public_subnets
+  sg                  = module.network.sg
+  ecr_repositories    = module.ecr.ecr_repositories
+  code_commit_backend = module.code_series.code_commit_backend
 }
 
 output "cloud9" {
@@ -64,4 +65,14 @@ module "parameter_store" {
 output "parameter_store" {
   value     = module.parameter_store
   sensitive = true
+}
+
+# code series
+module "code_series" {
+  source      = "../modules/code_series"
+  code_commit = local.code_commit
+  code_build  = local.code_build
+}
+output "code_series" {
+  value = module.code_series
 }

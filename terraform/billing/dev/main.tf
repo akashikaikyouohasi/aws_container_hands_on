@@ -112,3 +112,14 @@ module "ecs_service" {
 output "ecs_service" {
   value = module.ecs_service
 }
+
+##################
+# CodePipeline
+##################
+module "codepipeline" {
+  source = "../modules/codepipeline"
+
+  ecs_backend           = local.backend_ecs_service
+  codepipeline_backend  = local.codepipeline_backend
+  codepipeline_frontend = local.codepipeline_frontend
+}

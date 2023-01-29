@@ -1,0 +1,53 @@
+{
+    "taskRoleArn": "arn:aws:iam::206863353204:role/EcsTaskRole",
+    "executionRoleArn": "arn:aws:iam::206863353204:role/EcsTaskRole",
+    "containerDefinitions": [
+      {
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/dev-ecs-handson/sbcntr-backend-def",
+            "awslogs-region": "ap-northeast-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        },
+        "portMappings": [
+          {
+            "hostPort": 80,
+            "protocol": "tcp",
+            "containerPort": 80
+          }
+        ],
+        "cpu": 256,
+        "readonlyRootFilesystem": true,
+        "environment": [],
+        "secrets": [
+          {
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:206863353204:secret:sbcntr/mysql-tPqCmi:host::",
+            "name": "DB_HOST"
+          },
+          {
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:206863353204:secret:sbcntr/mysql-tPqCmi:dbname::",
+            "name": "DB_NAME"
+          },
+          {
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:206863353204:secret:sbcntr/mysql-tPqCmi:password::",
+            "name": "DB_PASSWORD"
+          },
+          {
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:206863353204:secret:sbcntr/mysql-tPqCmi:username::",
+            "name": "DB_USERNAME"
+          }
+        ],
+        "memoryReservation": 512,
+        "image": "<IMAGE1_NAME>",
+        "essential": true,
+        "name": "app"
+      }
+    ],
+    "memory": "1024",
+    "family": "sbcntr-ecs-backend-def",
+    "requiresCompatibilities": ["FARGATE"],
+    "networkMode": "awsvpc",
+    "cpu": "512"
+  }

@@ -1,0 +1,27 @@
+$ cd /home/ec2-user/environment/sbcntr-backend/
+$ git remote -v
+origin  https://github.com/uma-arai/sbcntr-backend.git (fetch)
+origin  https://github.com/uma-arai/sbcntr-backend.git (push)
+
+$ git remote set-url origin  https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/sbcntr-backend
+
+$ git remote -v
+origin  https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/sbcntr-backend (fetch)
+origin  https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/sbcntr-backend (push)
+
+$ git push
+
+### buildspec.yml作成後 ###
+$ git add buildspec.yml
+$ git commit -m 'ci: add buildspec'
+$ git push
+
+### appspec.yaml,taskdef.json作成後 ###
+$ git add appspec.yaml taskdef.json
+$ git commit -m 'ci: add appspec and task definition'
+$ git push
+
+### buildspec.yml修正後 ###
+$ git add buildspec.yml 
+$ git commit -m 'ci: modify buildspec'
+$ git push
