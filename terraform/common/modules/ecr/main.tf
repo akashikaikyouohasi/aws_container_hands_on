@@ -16,7 +16,7 @@ resource "aws_ecr_repository" "ecr" {
 
 # ライフサイクルポリシー
 resource "aws_ecr_lifecycle_policy" "foopolicy" {
-  for_each = var.ecr
+  for_each   = var.ecr
   repository = aws_ecr_repository.ecr[each.key].name
 
   policy = <<EOF
