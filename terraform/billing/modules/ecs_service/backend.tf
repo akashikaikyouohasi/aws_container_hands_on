@@ -44,6 +44,9 @@ resource "aws_ecs_service" "backend" {
     registry_arn = aws_service_discovery_service.backend.arn
   }
 
+  # 新しいデプロイの強制
+  force_new_deployment = false
+
   lifecycle {
     ignore_changes = [desired_count]
   }
@@ -131,5 +134,47 @@ resource "aws_service_discovery_service" "backend" {
   health_check_custom_config {
     # 失敗しきい値
     failure_threshold = 1
+  }
+}
+
+##################
+# AutoSacling
+##################
+resource "aws_appautoscaling_target" "appautoscaling_ecs_target" {
+  service_namespace  = "ecs"
+  
+  # ECSサービス名
+  resource_id        = "service/${var.backend_ecs_service.cluster.name}/${aws_ecs_service.backend.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+
+  # 最小数
+  min_capacity       = 2
+  # 最大数
+  max_capacity       = 4
+}
+
+resource "aws_appautoscaling_policy" "appautoscaling_scale_up" {
+  name               = "sbcntr-ecs-scalingPolicy"
+  service_namespace  = "ecs"
+  
+  # ECSサービス名
+  resource_id        = "service/${var.backend_ecs_service.cluster.name}/${aws_ecs_service.backend.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+
+  # スケーリングのポリシータイプ
+  policy_type = "TargetTrackingScaling"
+  target_tracking_scaling_policy_configuration {
+    # ECSのサービスメトリクス
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+    # ターゲット値
+    target_value = 50
+    # スケールアウトクールダウン期間
+    scale_out_cooldown  = 300
+    # スケールインクールダウン期間
+    scale_in_cooldown = 300
+    # スケールインの無効化
+    disable_scale_in = false
   }
 }
