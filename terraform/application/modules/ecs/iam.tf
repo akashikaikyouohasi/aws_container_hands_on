@@ -42,8 +42,8 @@ data "aws_iam_policy_document" "s3_kms_logs" {
       "s3:PutObject"
     ]
     resources = [
-      var.log_s3_bucket_name,
-      "${var.log_s3_bucket_name}/*"
+      "arn:aws:s3:::${var.log_s3_bucket_name}",
+      "arn:aws:s3:::${var.log_s3_bucket_name}/*"
     ]
   }
   statement {
