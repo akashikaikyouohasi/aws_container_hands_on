@@ -25,6 +25,52 @@ data "aws_iam_policy_document" "secrets_manager" {
   }
 }
 
+# S3バケットとログ出力
+resource "aws_iam_policy" "s3_kms_logs" {
+  name   = "sbcntr-AccessingLogDestination"
+  policy = data.aws_iam_policy_document.s3_kms_logs.json
+}
+data "aws_iam_policy_document" "s3_kms_logs" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:GetBucketLocation",
+      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:PutObject"
+    ]
+    resources = [
+      var.log_s3_bucket_name,
+      "${var.log_s3_bucket_name}/*"
+    ]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+    statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+      "logs:PutLogEvents"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+}
+
 
 ### IAM Role ###
 data "aws_iam_policy_document" "ecs_task_assume_role_policy" {
@@ -51,4 +97,9 @@ resource "aws_iam_policy_attachment" "secrets_manager" {
   name       = var.ecs_backend.task_definition.ecs_task_iam_name
   roles      = [aws_iam_role.ecs_task.name]
   policy_arn = aws_iam_policy.secrets_manager.arn
+}
+resource "aws_iam_policy_attachment" "s3_kms_logs" {
+  name       = var.ecs_backend.task_definition.ecs_task_iam_name
+  roles      = [aws_iam_role.ecs_task.name]
+  policy_arn = aws_iam_policy.s3_kms_logs.arn
 }
