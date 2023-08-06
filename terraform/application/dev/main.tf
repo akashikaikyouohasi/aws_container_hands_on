@@ -29,10 +29,10 @@ output "codedeploy" {
 module "ecs" {
   source = "../modules/ecs"
 
-  ecs_backend  = local.ecs_backend
-  ecs_frontend = local.ecs_frontend
+  ecs_backend        = local.ecs_backend
+  ecs_frontend       = local.ecs_frontend
   log_s3_bucket_name = module.logs.s3_bucket.bucket
-  logs_group = module.logs.logs_group
+  logs_group         = module.logs.logs_group
 }
 output "ecs" {
   value = module.ecs

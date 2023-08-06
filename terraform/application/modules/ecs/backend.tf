@@ -68,8 +68,8 @@ resource "aws_ecs_task_definition" "backend" {
       # ログ設定
       logConfiguration = {
         logDriver = "awsfirelens"
-        options = null
-        secretOptions: null
+        options   = null
+        secretOptions : null
 
         # logDriver = "awslogs"
         # options = {
@@ -100,7 +100,7 @@ resource "aws_ecs_task_definition" "backend" {
       #基本
       essential = true
       # 環境変数
-      environment  = [
+      environment = [
         {
           name : "APP_ID",
           value : "backend-def"
@@ -143,8 +143,8 @@ resource "aws_ecs_task_definition" "backend" {
       firelensConfiguration = {
         type = "fluentbit"
         options = {
-          config-file-type: "file"
-          config-file-value: "/fluent-bit/custom.conf"
+          config-file-type : "file"
+          config-file-value : "/fluent-bit/custom.conf"
         }
       }
 

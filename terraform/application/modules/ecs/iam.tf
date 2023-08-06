@@ -56,7 +56,7 @@ data "aws_iam_policy_document" "s3_kms_logs" {
       "*"
     ]
   }
-    statement {
+  statement {
     effect = "Allow"
     actions = [
       "logs:CreateLogGroup",

@@ -141,22 +141,22 @@ resource "aws_service_discovery_service" "backend" {
 # AutoSacling
 ##################
 resource "aws_appautoscaling_target" "appautoscaling_ecs_target" {
-  service_namespace  = "ecs"
-  
+  service_namespace = "ecs"
+
   # ECSサービス名
   resource_id        = "service/${var.backend_ecs_service.cluster.name}/${aws_ecs_service.backend.name}"
   scalable_dimension = "ecs:service:DesiredCount"
 
   # 最小数
-  min_capacity       = 2
+  min_capacity = 2
   # 最大数
-  max_capacity       = 4
+  max_capacity = 4
 }
 
 resource "aws_appautoscaling_policy" "appautoscaling_scale_up" {
-  name               = "sbcntr-ecs-scalingPolicy"
-  service_namespace  = "ecs"
-  
+  name              = "sbcntr-ecs-scalingPolicy"
+  service_namespace = "ecs"
+
   # ECSサービス名
   resource_id        = "service/${var.backend_ecs_service.cluster.name}/${aws_ecs_service.backend.name}"
   scalable_dimension = "ecs:service:DesiredCount"
@@ -171,7 +171,7 @@ resource "aws_appautoscaling_policy" "appautoscaling_scale_up" {
     # ターゲット値
     target_value = 50
     # スケールアウトクールダウン期間
-    scale_out_cooldown  = 300
+    scale_out_cooldown = 300
     # スケールインクールダウン期間
     scale_in_cooldown = 300
     # スケールインの無効化
