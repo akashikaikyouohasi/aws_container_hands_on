@@ -93,3 +93,15 @@ $ git add Dockerfile
 $ git commit -m 'ci: change Dockerfile'
 $ git push
 
+### Firelens ###
+cd /home/ec2-user/environment
+mkdir base-logrouter 
+cd base-logrouter 
+touch fluent-bit-custom.conf myparsers.conf stream_processor.conf Dockerfile
+
+cd /home/ec2-user/environment/base-logrouter 
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+docker image build -t sbcntr-log-router .
+aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-base
+docker image tag sbcntr-log-router:latest ${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-base:log-router
+docker image push ${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/sbcntr-base:log-router
