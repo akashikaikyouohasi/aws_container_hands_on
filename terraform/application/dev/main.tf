@@ -36,6 +36,13 @@ output "ecs" {
   value = module.ecs
 }
 
+module "logs" {
+  source = "../modules/logs"
+}
+output "logs" {
+  value = module.logs
+}
+
 ##################
 # Aurora
 ##################
